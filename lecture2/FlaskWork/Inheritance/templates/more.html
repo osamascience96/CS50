@@ -1,0 +1,13 @@
+<!-- Inherits the general structure from the layout page -->
+
+{% extends "layout.html" %}
+
+{% block heading %}
+    Second Page
+{% endblock %}
+
+{% block body %}
+    <p> This is the second Page and i am using the Flask Framework and Python Language in More Page.</p>
+
+    <a href="{{ url_for('index') }}">Go Back</a>
+{% endblock %}

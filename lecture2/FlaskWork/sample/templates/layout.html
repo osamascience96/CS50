@@ -1,0 +1,15 @@
+<!-- base html template -->
+<!Doctype html>
+<html>
+    <head>
+        <title>My Webpage</title>
+    </head>
+    <body>
+        <!-- define the heading layout template -->
+        <h1>{% block heading %}{%endblock%}</h1>
+
+        <!-- define the body template-->
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

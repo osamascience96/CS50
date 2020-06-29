@@ -20,5 +20,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # include the urls of the hello app to this url file in order to access different parts of the hello application
     # So the hello app url and this default app url files are linked together.
-    path('hello/', include("hello.urls"))
+    path('hello/', include("hello.urls")),
+    # path for the newyear app
+    path('newyear/', include("newyear.urls")),
+    # path for the tasks app
+    path('tasks/', include("tasks.urls"))
 ]

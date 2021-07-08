@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <script>
+        function loadcontent(section){
+            fetch(`/singlepage/sections/${section}`)
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                document.querySelector("#content").innerHTML = data;
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            document.querySelectorAll('button').forEach(button => {
+                button.onclick = function(){
+                    loadcontent(this.dataset.section);
+                }
+            })
+        });
+    </script>
+    <h1>Hello! <span id="content"></span></h1>
+    <button data-section="1">Section 1</button>
+    <button data-section="2">Section 2</button>
+    <button data-section="3">Section 3</button>
+    <button data-section="4">Section 4</button>
+{% endblock %}

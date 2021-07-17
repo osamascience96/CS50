@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script>
+        // on DOM loaded, execute the inside of the code
+        document.addEventListener("DOMContentLoaded", function(){
+            // on handler, when i go back or pop a state in my browser history 
+            window.onpopstate = function(event){
+                // accessing the section object from the popped state, in 
+                // this case using event and show the section object stored in the state
+                console.log(event.state.section);
+                showSection(event.state.section);
+            }
+            //accessing the endpoint from the server
+            function showSection(section){
+                
+                fetch(`/history/sections/${section}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // display the content div 
+                    document.querySelector("#content").style.display = "block";
+                    // init the field of the data
+                    const dataField = data[0]['fields'];
+                    // display the values to the html
+                    document.querySelector("#Prophetname").innerHTML = dataField['full_name'];
+                    document.querySelector("#speciality").innerHTML = dataField['speciality'];
+                    document.querySelector("#age").innerHTML = dataField['age'];
+                    document.querySelector("#details").innerHTML = dataField['details'];
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+            // select all the buttons in this view for instance 
+            document.querySelectorAll("button").forEach(button => {
+                // any button clicked for instance here in this view
+                button.onclick = function(){
+                    // get the data from the data attribute, in this case "section" and store it in the section var
+                    const section = this.dataset.section;   
+                    
+                    // push the new element inside of my browser url history
+                    // 1st argument where in this case i have passed a js object to store the data at that particular state
+                    // 2nd is the title that is set empty
+                    // 3rd is the argument that is appeared inside the url history in the browser
+                    history.pushState({section:section}, "", `section${section}`)
+                    
+                    // show the section of that particular page
+                    showSection(section);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <button data-section="1">Prophet 1</button>
+    <button data-section="2">Prophet 2</button>
+    <button data-section="3">Prophet 3</button>
+    <button data-section="4">Prophet 4</button>
+    <button data-section="5">Prophet 5</button>
+    <div id="content" style="display: none;">
+        <h1>Name: <span id="Prophetname"></span></h1>
+        <h4>Speciality: <span id="speciality"></span></h4>
+        <h5>Age: <span id="age"></span></h5>
+        <p>Details: <span id="details"></span></p>
+    </div>
+</body>
+</html>

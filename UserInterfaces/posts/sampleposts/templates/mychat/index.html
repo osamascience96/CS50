@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogues</title>
+    <script>
+        // Fetch the number of users from the server
+        const chatusers = [];
+        fetch("/sampleposts/getUsers")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(element => {
+                chatusers.push({'Id': element['pk'], 'name': element['fields']['name']})
+            });
+        });
+
+        // let counter be 0
+        let counter = 0;
+
+        // Adding the html content
+        let htmlContentArray = [];
+        
+        // on document loaded
+        document.addEventListener("DOMContentLoaded", function(){
+            // loading the chat first when the content is loaded
+            loadChats();
+            
+        });
+
+        function LoadsHTMLContent(){
+            var contentString = "";
+            // using the html array, loads the content of the html 
+            htmlContentArray.forEach(object => {
+                contentString = contentString.concat(`<h1 class='heading'>${object['user']['name']}</h1>`);
+                contentString = contentString.concat(`<h4 class='chat_message'>${object['thread']}</h4>`);
+            });
+            // populate the string to the div
+            PopulateContent(contentString);
+        }
+
+        function PopulateContent(content){
+            document.querySelector("#chat_content").innerHTML = content;
+        }
+
+        // write the logic on scroll
+        window.onscroll = () => {
+            if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
+                loadChats();
+            }
+        }
+
+        // function to get the chat from the start to end index
+        function loadChats(){
+            // Start should be an increment of the counter and end should be the start index + 9 so that we 
+            // fetch the chat of 10 threads on each desired action
+            let start = 1;
+            let end = counter + 10;
+
+            fetch(`/sampleposts/posts?start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(data => {
+                // empty the array at each api success call
+                htmlContentArray = [];
+                data.forEach(element => {
+                    // Get the User Data and its Chat Thread
+                    const fields = element["fields"];
+                    const user = GetUserObject(fields['userId']);
+                    const thread = fields["chatThread"];
+
+                    // adding the values to the content array 
+                    htmlContentArray.push({'user':user, 'thread':thread});
+                });
+                // increment the counter
+                counter +=10;
+                // Loads the HTML Content
+                LoadsHTMLContent();
+            });
+        } 
+        
+        // function that returns the user object
+        function GetUserObject(id){
+            let returnedUser = undefined;
+            chatusers.forEach(user => {
+                if(id === user['Id']){
+                    returnedUser = user;
+                }
+            });
+
+            return returnedUser;
+        }
+    </script>
+</head>
+<body>
+    <div id="chat_content"></div>
+</body>
+</html>

@@ -34,7 +34,7 @@
             // using the html array, loads the content of the html 
             htmlContentArray.forEach(object => {
                 contentString = contentString.concat(`<h1 class='heading'>${object['user']['name']}</h1>`);
-                contentString = contentString.concat(`<h4 class='chat_message'>${object['thread']}</h4>`);
+                contentString = contentString.concat(`<h2 class='chat_message'>${object['thread']}</h2>`);
             });
             // populate the string to the div
             PopulateContent(contentString);

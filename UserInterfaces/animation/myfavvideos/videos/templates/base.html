@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Videos</title>
+    <style>
+        body{
+            background: darkslategray;
+        }
+        .player > iframe{
+            width: 100%;
+            border: 4px solid black;
+            border-radius: 5px;
+        }
+        .player > iframe:hover{
+            border-color: whitesmoke;        
+            transition: 1s;
+        }
+        .video_meta{
+            float: left;
+            width: 50%;
+            padding: 0;
+            margin: 0;
+            color: white;
+        }
+        .hide{
+            float: right;
+            width: 50%;
+            position: relative;
+            top: 50px;
+            border: 2px solid;
+            border-radius: 4px;
+            background: white;
+            font-size: medium;
+        }
+
+        .hide:hover{
+            border-color: white;
+            background-color: lightskyblue;
+            cursor: pointer;
+            color: whitesmoke;
+            transition: 2s;
+        }
+
+        .videoplayer{
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .video_description, .video_category{
+            color: darkkhaki;
+        }
+    </style>
+    <script>
+        // set the counter to 1
+        var counter = 5;
+        
+        // start should be from 1
+        var start = 1;
+        // end should be from the counter
+        var end = counter;
+
+        document.addEventListener("DOMContentLoaded", function(){
+            // load the first of the sets from the backend
+            loads();
+            // load function that loads the link as per the values of the start and end 
+            function loads(){
+                fetch(`/videos/getmyvideos?start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    RenderVideo(data);
+                    counter +=5;
+                    end = counter;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+
+            // function the renders the bootstrap classes to the videolist div
+            function RenderVideo(data){
+                const mainDiv = document.querySelector("#videolist");
+                // clear the content of the div
+                mainDiv.innerHTML = "";
+                // loop through each data
+                data.forEach(video => {
+                    const htmlcontent = `
+                            <div class="player">
+                                <iframe height="350" src="${video.fields.link}" title="${video.fields.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <div class="video_meta">
+                                    <h3>Description: <span class="video_description">${video.fields.description}</span></h3>
+                                    <h4>Category: <span class="video_category">${video.fields.category}</span></h4>
+                                </div>
+                            </div>
+                            <button class="hide">Hide</button>
+                        `;
+                    var videoPlayer = document.createElement('div');
+                    videoPlayer.className = "videoplayer";
+                    videoPlayer.dataset = video.pk;
+                    videoPlayer.innerHTML = htmlcontent;
+                    // append to the video list div
+                    mainDiv.appendChild(videoPlayer);
+                });
+            }
+
+            // load the data on scroll
+            // if the scroll reaches the end of the page 
+            window.onscroll = () => {
+                if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
+                    loads();
+                }
+            } 
+        });
+    </script>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

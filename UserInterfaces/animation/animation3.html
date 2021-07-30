@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation 3</title>
+    <style>
+        @keyframes move {
+            /* this is one way of defining the point when in the course of the animation */
+            /* from{
+                left: 0%;
+            }
+            to{
+                left: 50%;
+            } */
+
+            /* there is another way of defining the points during the course of the animation */
+            0%{
+                left: 0%;
+            }
+            50%{
+                left: 50%;
+            }
+            100%{
+                left: 0%;
+            }
+        }
+        h1{
+            position: relative;
+            animation-name: move;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            /* animation iteration counts */
+            /* Though you can specify the number, or you can use infinite for infinite iterations */
+            animation-iteration-count: infinite;
+        }
+    </style>
+    <script>
+        // when the dom content is loaded
+        document.addEventListener("DOMContentLoaded", function(){
+            const h1 = document.querySelector("h1");
+            // make the state of the animation to paused by default
+            h1.style.animationPlayState = "paused";
+            // on button click 
+            document.querySelector("button").onclick = event => {
+                debugger;
+                // check if the h1 animation is in the paused state
+                if(h1.style.animationPlayState === "paused"){
+                    // run the animation
+                    h1.style.animationPlayState = "running";
+                    // change the text of the button 
+                    document.querySelector("button").innerHTML = "paused";
+                }else{
+                    // if the state is in running
+                    h1.style.animationPlayState = "paused";
+                    // change the text of the button 
+                    document.querySelector("button").innerHTML = "play";
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+    <button>Play</button>
+    <h1>Welcome!</h1>
+</body>
+</html>

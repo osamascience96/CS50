@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation1</title>
+    <style>
+        @keyframes grow {
+            from{
+                font-size: 20px;
+            }    
+            to{
+                font-size: 100px;
+            }
+        }
+
+        h1{
+            /* animation name */
+            animation-name: grow;
+            /* duration */
+            animation-duration: 2s;
+            /* fill property */
+            animation-fill-mode: forwards;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome!</h1>
+</body>
+</html>

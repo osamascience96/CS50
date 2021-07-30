@@ -27,10 +27,9 @@
             color: white;
         }
         .hide{
-            float: right;
             width: 50%;
             position: relative;
-            top: 50px;
+            top: 10px;
             border: 2px solid;
             border-radius: 4px;
             background: white;
@@ -45,9 +44,39 @@
             transition: 2s;
         }
 
+        @keyframes hidden {
+            0%{
+                opacity: 1;
+                height: 100%;
+                line-height: 100%;
+                padding: 10px;
+                margin: 10px;
+            }
+
+            75%{
+                opacity: 0;
+                height: 100%;
+                line-height: 100%;
+                padding: 10px;
+                margin: 10px;
+            }
+
+            100%{
+                opacity: 0;
+                height: 0;
+                line-height: 0;
+                padding: 0;
+                margin: 0;
+            }
+        }
+
         .videoplayer{
             padding: 10px;
             margin: 10px;
+            animation-name: hidden;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
         }
 
         .video_description, .video_category{
@@ -80,6 +109,18 @@
                     console.log(error);
                 })
             }
+
+            document.addEventListener('click', event => {
+                const element = event.target;
+                // if the element that is clicked contains the hide class
+                if(element.className === "hide"){
+                    // run the animation for the parent class
+                    element.parentElement.style.animationPlayState = 'running';
+                    element.parentElement.addEventListener('animationend', function(){
+                        element.parentElement.remove();
+                    });
+                }
+            });
 
             // function the renders the bootstrap classes to the videolist div
             function RenderVideo(data){

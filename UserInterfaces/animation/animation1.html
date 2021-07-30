@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation 2</title>
+    <style>
+        @keyframes move {
+            /* this is one way of defining the point when in the course of the animation */
+            /* from{
+                left: 0%;
+            }
+            to{
+                left: 50%;
+            } */
+
+            /* there is another way of defining the points during the course of the animation */
+            0%{
+                left: 0%;
+            }
+            50%{
+                left: 50%;
+            }
+            100%{
+                left: 0%;
+            }
+        }
+        h1{
+            position: relative;
+            animation-name: move;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            /* animation iteration counts */
+            /* Though you can specify the number, or you can use infinite for infinite iterations */
+            animation-iteration-count: infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome!</h1>
+</body>
+</html>
